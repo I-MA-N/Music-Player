@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="Styles/output.css">
+    <title>Music Player</title>
+    <script type="text/javascript">
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark')
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+    </script>
+</head>
+<body class="relative">
+    
+    <div class="min-h-screen flex items-center justify-center">
+        <div class="w-96 h-full rounded-3xl bg-primary">
+            <div class="relative h-2/3 bg-white dark:bg-secondary rounded-3xl px-3 xs:px-6 py-6">
+                <!-- Switch them button -->
+                <button id="toggleThemeBtn" class="absolute top-4 right-4">
+                    <span class="text-primary block dark:hidden"><i class="fa-solid fa-palette fa-xl"></i></span>
+                    <span class="text-primary hidden dark:block"><i class="fa-solid fa-palette fa-xl"></i></span>
+                </button>
+
+                <h2 class="text-primary text-xl text-center tracking-[0.3em]">NOW PLAYING</h2>
+                
+                <!-- Switch song & Song image -->
+                <div class="flex justify-between items-center text-white xs:px-4 my-5">
+                    <!-- Prev song -->
+                    <button id="prevSong" class="switch-song-buttons">
+                        <i class="fa-solid fa-chevron-left"></i>                    
+                    </button>
+                    <!-- Song image -->
+                    <img id="songImg" src="./Images/imagine-dragons-believer.jpg" alt="musicImg" class="w-40 h-40 xs:w-48 xs:h-48 rounded-full ring-primary ring-4 transition-all">
+                    <!-- Next song -->
+                    <button id="nextSong" class="switch-song-buttons">
+                        <i class="fa-solid fa-chevron-right"></i>                    
+                    </button>
+                </div>
+                <!-- Name & Singer -->
+                <div class="text-primary text-4xl text-center font-bold my-8 mb-10">
+                    <h1 id="songName">Believer</h1>
+                    <p id="songSinger" class="text-lg mt-2 font-normal">Imagin Dragons</p>
+                </div>
+            </div>
+            <div class="relative p-10">
+                <!-- Forward/Backward & Play/Pause buttons -->
+                <div class="absolute -top-[15%] left-1/2 -translate-x-1/2 w-full flex justify-between items-center px-10">
+                    <!-- Forward -->
+                    <button id="backwardBtn" class="flex w-14 h-14 playing-buttons">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                            <path d="M9.195 18.44c1.25.713 2.805-.19 2.805-1.629v-2.34l6.945 3.968c1.25.714 2.805-.188 2.805-1.628V8.688c0-1.44-1.555-2.342-2.805-1.628L12 11.03v-2.34c0-1.44-1.555-2.343-2.805-1.629l-7.108 4.062c-1.26.72-1.26 2.536 0 3.256l7.108 4.061z" />
+                        </svg>                                                   
+                    </button>
+                    <!-- Play -->
+                    <button id="playBtn" class="flex w-20 h-20 playing-buttons">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-10 h-10">
+                            <path fill-rule="evenodd" d="M4.5 5.653c0-1.426 1.529-2.33 2.779-1.643l11.54 6.348c1.295.712 1.295 2.573 0 3.285L7.28 19.991c-1.25.687-2.779-.217-2.779-1.643V5.653z" clip-rule="evenodd" />
+                        </svg>                                                  
+                    </button>
+                    <!-- Pause -->
+                    <button id="pauseBtn" class="hidden w-20 h-20 playing-buttons">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25v13.5m-7.5-13.5v13.5" />
+                        </svg>                                                                       
+                    </button>
+                    <!-- Backward -->
+                    <button id="forwardBtn" class="flex w-14 h-14 playing-buttons">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                            <path d="M5.055 7.06c-1.25-.714-2.805.189-2.805 1.628v8.123c0 1.44 1.555 2.342 2.805 1.628L12 14.471v2.34c0 1.44 1.555 2.342 2.805 1.628l7.108-4.061c1.26-.72 1.26-2.536 0-3.256L14.805 7.06C13.555 6.346 12 7.25 12 8.688v2.34L5.055 7.06z" />
+                        </svg>                          
+                    </button>
+                </div>
+                
+                <div class="my-10">
+                    <!-- Audio tag -->
+                    <audio id="audioElem" src="./Songs/Imagine Dragons - Believer [320].mp3"></audio>
+                    <!-- Total & Current time -->
+                    <div class="flex justify-between items-center mb-3 px-2 text-sm text-white dark:text-secondary">
+                        <p id="currentTimeElem">00:00</p>
+                        <p id="totalTimeElem">00:00</p>
+                    </div>
+                    <!-- Timeline -->
+                    <div class="relative">
+                        <button id="timeLineElem" class="block w-full h-3 rounded-3xl bg-gray-300"></button>
+                        <button id="progressBarElem" class="h-3 flex justify-end items-center absolute top-0 left-0 rounded-3xl bg-white dark:bg-secondary z-10">
+                            <span class="inline-flex items-center justify-center w-2 h-6 bg-white dark:bg-secondary rounded-full">
+                                <span class="inline-block w-1 h-2 bg-primary rounded-full"></span>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="background" class="absolute top-0 left-0 w-full h-full -z-10 blur-md"></div>
+
+<script src="https://kit.fontawesome.com/cb266470ca.js" crossorigin="anonymous"></script>
+<script src="Scripts/script.js"></script>
+</body>
+</html>
